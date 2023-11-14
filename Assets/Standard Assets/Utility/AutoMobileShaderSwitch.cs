@@ -15,8 +15,8 @@ namespace UnityStandardAssets.Utility
         private void OnEnable()
         {
 #if UNITY_IPHONE || UNITY_ANDROID || UNITY_WP8 || UNITY_TIZEN
-			var renderers = FindObjectsOfType<Renderer>();
-			Debug.Log (renderers.Length+" renderers");
+			//var renderers = FindObjectsOfType<Renderer>();
+			//Debug.Log (renderers.Length+" renderers");
 			var oldMaterials = new List<Material>();
 			var newMaterials = new List<Material>();
 
@@ -25,36 +25,36 @@ namespace UnityStandardAssets.Utility
 
 			foreach(ReplacementDefinition replacementDef in m_ReplacementList.items)
 			{
-				foreach(var r in renderers)
-				{
-					Material[] modifiedMaterials = null;
-					for(int n=0; n<r.sharedMaterials.Length; ++n)
-					{
-						var material = r.sharedMaterials[n];
-						if (material.shader == replacementDef.original)
-						{
-							if (modifiedMaterials == null)
-							{
-								modifiedMaterials = r.materials;
-							}
-							if (!oldMaterials.Contains(material))
-							{
-								oldMaterials.Add(material);
-								Material newMaterial = (Material)Instantiate(material);
-								newMaterial.shader = replacementDef.replacement;
-								newMaterials.Add(newMaterial);
-								++materialsReplaced;
-							}
-							Debug.Log ("replacing "+r.gameObject.name+" renderer "+n+" with "+newMaterials[oldMaterials.IndexOf(material)].name);
-							modifiedMaterials[n] = newMaterials[oldMaterials.IndexOf(material)];
-							++materialInstancesReplaced;
-						}
-					}
-					if (modifiedMaterials != null)
-					{
-						r.materials = modifiedMaterials;
-					}
-				}
+				//foreach(var r in renderers)
+				//{
+				//	Material[] modifiedMaterials = null;
+				//	for(int n=0; n<r.sharedMaterials.Length; ++n)
+				//	{
+				//		var material = r.sharedMaterials[n];
+				//		if (material.shader == replacementDef.original)
+				//		{
+				//			if (modifiedMaterials == null)
+				//			{
+				//				modifiedMaterials = r.materials;
+				//			}
+				//			if (!oldMaterials.Contains(material))
+				//			{
+				//				oldMaterials.Add(material);
+				//				Material newMaterial = (Material)Instantiate(material);
+				//				newMaterial.shader = replacementDef.replacement;
+				//				newMaterials.Add(newMaterial);
+				//				++materialsReplaced;
+				//			}
+				//			Debug.Log ("replacing "+r.gameObject.name+" renderer "+n+" with "+newMaterials[oldMaterials.IndexOf(material)].name);
+				//			modifiedMaterials[n] = newMaterials[oldMaterials.IndexOf(material)];
+				//			++materialInstancesReplaced;
+				//		}
+				//	}
+				//	if (modifiedMaterials != null)
+				//	{
+				//		r.materials = modifiedMaterials;
+				//	}
+				//}
 			}
 			Debug.Log (materialInstancesReplaced+" material instances replaced");
 			Debug.Log (materialsReplaced+" materials replaced");
