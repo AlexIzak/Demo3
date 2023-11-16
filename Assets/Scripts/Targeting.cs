@@ -7,10 +7,10 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class Targeting : MonoBehaviour
 {
-    private Transform target;
+    public static Transform target;
     public SpriteRenderer selected;
 
-    public GameObject attackButton;
+    public GameObject enemyUI;
 
     public static bool canAttack = false;
 
@@ -20,7 +20,7 @@ public class Targeting : MonoBehaviour
     {
         target = null;
         selected.enabled = false;
-        attackButton.SetActive(false);
+        enemyUI.SetActive(false);
     }
 
     // Update is called once per frame
@@ -53,7 +53,7 @@ public class Targeting : MonoBehaviour
                     canAttack = false;
                 }
 
-                attackButton.SetActive(canAttack);
+                enemyUI.SetActive(canAttack);
 
                 if (IsMouseOverUI())
                 {

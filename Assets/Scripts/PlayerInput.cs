@@ -14,7 +14,7 @@ public class PlayerInput : MonoBehaviour
     [Header("Attaking")]
     public GameObject spell;
 
-    public float castingCD;
+    public float castingCD = 3f;
     private float curCastingCD;
 
     public float spellSpeed;
@@ -29,20 +29,24 @@ public class PlayerInput : MonoBehaviour
     {
         Move();
 
-        Attack(Targeting.canAttack);
+        bool canShoot = Targeting.canAttack;
+        Attack(canShoot);
     }
 
     private void Attack(bool canAttack)
     {
-        curCastingCD += Time.deltaTime;
-        if (curCastingCD > castingCD)
+        if(canAttack)
         {
-            if (Mathf.Abs(CrossPlatformInputManager.GetAxis("Horizontal_2")) > 0 || Mathf.Abs(CrossPlatformInputManager.GetAxis("Vertical_2")) > 0)
+            curCastingCD += Time.deltaTime;
+            if (curCastingCD > castingCD)
             {
+                Vector2 dest = Targeting.target.transform.position - transform.position;          
+
                 GameObject s = Instantiate(spell, transform.position, Quaternion.identity);
-                s.GetComponent<Rigidbody2D>().velocity = new Vector2(CrossPlatformInputManager.GetAxis("Horizontal_2"), CrossPlatformInputManager.GetAxis("Vertical_2")).normalized * spellSpeed;
+                s.GetComponent<Rigidbody2D>().velocity = new Vector2(dest.x, dest.y).normalized * spellSpeed;
 
                 curCastingCD = 0;
+                //}
             }
         }
     }
