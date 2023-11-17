@@ -10,7 +10,7 @@ public class Targeting : MonoBehaviour
     public static Transform target;
     public SpriteRenderer selected;
 
-    public GameObject enemyUI;
+    public Canvas combat;
 
     public static bool canAttack = false;
 
@@ -20,7 +20,7 @@ public class Targeting : MonoBehaviour
     {
         target = null;
         selected.enabled = false;
-        enemyUI.SetActive(false);
+        combat.enabled = false;
     }
 
     // Update is called once per frame
@@ -53,7 +53,7 @@ public class Targeting : MonoBehaviour
                     canAttack = false;
                 }
 
-                enemyUI.SetActive(canAttack);
+                combat.enabled = canAttack;
 
                 if (IsMouseOverUI())
                 {

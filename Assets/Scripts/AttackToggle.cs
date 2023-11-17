@@ -29,7 +29,7 @@ public class AttackToggle : MonoBehaviour
             gameObject.GetComponent<Image>().color = Color.white;
             timer = 2f;
         }
-        Debug.Log(timer);
+        //Debug.Log(timer);
     }
 
     public void Attack()
