@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
@@ -12,16 +13,21 @@ public class PlayerInput : MonoBehaviour
     public Animator animator;
 
     [Header("Attaking")]
-    public GameObject spell;
-
+    public PlayerStats player;
     public float castingCD = 3f;
-    private float curCastingCD;
-
-    public float spellSpeed;
+    private float curAttackSpeed;
+    public PlayerStats enemy;
+    public CombatHelper helper;
+    public TMP_Text enemyDamage;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        player.health = player.maxHealth;
+        player.mana = player.maxMana;
+        enemy.health = enemy.maxHealth; //TODO Move to enemy AI script once made
+
+        enemyDamage.enabled = false;
     }
 
     // Update is called once per frame
@@ -29,24 +35,27 @@ public class PlayerInput : MonoBehaviour
     {
         Move();
 
-        bool canShoot = Targeting.canAttack;
-        Attack(canShoot);
+        bool canMelee = Targeting.canAttack && AttackToggle.canAttack;
+        Attack(canMelee);
     }
 
     private void Attack(bool canAttack)
     {
         if(canAttack)
         {
-            curCastingCD += Time.deltaTime;
-            if (curCastingCD > castingCD)
+            curAttackSpeed += Time.deltaTime;
+            if (curAttackSpeed > player.attackSpeed)
             {
-                Vector2 dest = Targeting.target.transform.position - transform.position;          
-
-                GameObject s = Instantiate(spell, transform.position, Quaternion.identity);
-                s.GetComponent<Rigidbody2D>().velocity = new Vector2(dest.x, dest.y).normalized * spellSpeed;
-
-                curCastingCD = 0;
-                //}
+                animator.Play("Player_Melee_Ready");
+                //Do Damage
+                //if (animator is playing the melee animation, deal damage)
+                {
+                    helper.Damage(player, enemy);
+                    enemyDamage.enabled = true;
+                    enemyDamage.text = helper.totalDamage.ToString();
+                }
+         
+                curAttackSpeed = 0;
             }
         }
     }

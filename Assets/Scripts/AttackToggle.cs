@@ -9,9 +9,10 @@ public class AttackToggle : MonoBehaviour
     public Targeting target;
     public Transform player;
     private Transform enemy;
-    private int range = 3;
+    private int range = 2;
     private float timer = 2f;
     public static bool canAttack = false;
+
 
     // Start is called before the first frame update
     void Start()
@@ -29,7 +30,6 @@ public class AttackToggle : MonoBehaviour
             gameObject.GetComponent<Image>().color = Color.white;
             timer = 2f;
         }
-        //Debug.Log(timer);
     }
 
     public void Attack()
@@ -40,13 +40,13 @@ public class AttackToggle : MonoBehaviour
         {
             //Can attack so make button green and Instantiate a fireball
             gameObject.GetComponent<Image>().color = Color.green;
-            canAttack = true;
+            canAttack = !canAttack;
         }
         else
         {
-            //Cant attack so make button green
+            //Cant attack so make button red
             gameObject.GetComponent<Image>().color = Color.red;
-            canAttack= false;
+            canAttack = false;
         }
         //return canAttack;
     }
