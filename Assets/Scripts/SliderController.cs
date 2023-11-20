@@ -17,7 +17,7 @@ public class SliderController : MonoBehaviour
     void Start()
     {
         healthBar.maxValue = stats.maxHealth;
-        amount.text = stats.health.ToString("100") + " / " + stats.maxHealth;
+        amount.text = stats.health + " / " + stats.maxHealth;
 
         //manaBar.maxValue = stats.maxMana;
         //manaPool.text = stats.mana + " / " + stats.maxMana;
@@ -27,7 +27,7 @@ public class SliderController : MonoBehaviour
     void Update()
     {
         healthBar.value = stats.health;
-        amount.text = stats.health + " / " + stats.maxHealth;
+        amount.text = (int)stats.health + " / " + stats.maxHealth;
 
         //manaBar.value = stats.mana;
         //manaPool.text = stats.mana + " / " + stats.maxMana;

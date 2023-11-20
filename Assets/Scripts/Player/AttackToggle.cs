@@ -12,7 +12,8 @@ public class AttackToggle : MonoBehaviour
     private int range = 2;
     private float timer = 2f;
     public static bool canAttack = false;
-
+    public Animator animator;
+    private Vector2 distance;
 
     // Start is called before the first frame update
     void Start()
@@ -30,11 +31,16 @@ public class AttackToggle : MonoBehaviour
             gameObject.GetComponent<Image>().color = Color.white;
             timer = 2f;
         }
+
+        distance = enemy.position - player.position;
+
+        animator.SetFloat("TargetX", distance.x);
+        animator.SetFloat("TargetY", distance.y);
     }
 
     public void Attack()
     {
-        Vector2 distance = enemy.position - player.position;
+        //distance = enemy.position - player.position;
 
         if (distance.magnitude < range)
         {

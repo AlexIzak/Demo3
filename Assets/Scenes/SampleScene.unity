@@ -1977,7 +1977,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   instance: {fileID: 514111879}
-  damage: 0
+  totalDamage: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -5447,6 +5447,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 153346345}
   player: {fileID: 188834616}
+  animator: {fileID: 188834620}
 --- !u!114 &1767978747
 MonoBehaviour:
   m_ObjectHideFlags: 0
