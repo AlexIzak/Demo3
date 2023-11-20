@@ -52,7 +52,7 @@ public class PlayerInput : MonoBehaviour
                 {
                     helper.Damage(player, enemy);
                     enemyDamage.enabled = true;
-                    enemyDamage.text = helper.totalDamage.ToString();
+                    enemyDamage.text = helper.totalDamage;
                 }
          
                 curAttackSpeed = 0;

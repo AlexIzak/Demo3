@@ -7,7 +7,7 @@ using UnityEngine;
 public class CombatHelper : MonoBehaviour
 {
     public CombatHelper instance;
-    public int totalDamage;
+    public string totalDamage;
 
     private void Start()
     {
@@ -27,18 +27,19 @@ public class CombatHelper : MonoBehaviour
             if(hitChance > 80)
             {
                 receiver.health -= damage * 2; //Crit
-                totalDamage = (int)damage * 2;
+                totalDamage = ((int)damage * 2).ToString();
             }
             else
             {
                 receiver.health -= damage;
-                totalDamage = (int)damage;
+                totalDamage = ((int)damage).ToString();
             }
         }
         else if(hitChance < 20)
         {
             //Display Miss
-            print("Miss");
+            //print("Miss");
+            totalDamage = "Miss!";
         }
     }
 
