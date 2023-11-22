@@ -33,10 +33,20 @@ public class PlayerInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        CheckHealth();
+
         Move();
 
         bool canMelee = Targeting.canAttack && AttackToggle.canAttack;
         Attack(canMelee);
+    }
+
+    private void CheckHealth()
+    {
+        if(player.health <= 0)
+        {
+            StartCoroutine(helper.Death(animator));
+        }
     }
 
     private void Attack(bool canAttack)

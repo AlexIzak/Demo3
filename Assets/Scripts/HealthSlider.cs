@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SliderController : MonoBehaviour
+public class HealthSlider : MonoBehaviour
 {
     public PlayerStats stats;
     public Slider healthBar;
