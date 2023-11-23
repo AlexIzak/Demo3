@@ -30,12 +30,15 @@ public class Spells : MonoBehaviour
     }
 
     SpellTypes magic;
-    private float spellCD;
+
+    private float spellTimer = 0;
+    private float spellInterval = 1f;
 
     private void Start()
     {
         castBar.gameObject.SetActive(false);
         magic = SpellTypes.None;
+        castBar.value = 0;
     }
 
     private void Update()
@@ -48,17 +51,8 @@ public class Spells : MonoBehaviour
 
             case SpellTypes.Fireball:
 
-                while(castBar.value > 0) //Stop input while casting
-                {
-                    fireballButton.enabled = false;
-                    fireballButton.image.color = Color.red;
-                }
-
                 if (castBar.value <= 0)
                 {
-                    fireballButton.enabled = true;
-                    fireballButton.image.color = Color.white;
-
                     Vector2 dest = Targeting.target.transform.position - transform.position;
 
                     GameObject s = Instantiate(fireball, transform.position, Quaternion.identity);
@@ -82,19 +76,25 @@ public class Spells : MonoBehaviour
 
             case SpellTypes.ArcaneMissile:
 
-                while(castBar.value > 0)
+                if(castBar.value > 0)
                 {
-                    arcaneMissileButton.enabled = false;
-                    arcaneMissileButton.image.color = Color.red;
-
                     Vector2 dest = Targeting.target.transform.position - transform.position;
+                    
+                    spellTimer += Time.deltaTime;
+                        
+                    print(spellTimer);
 
-                    GameObject s = Instantiate(arcaneMissile, transform.position, Quaternion.identity);
-                    s.GetComponent<Rigidbody2D>().velocity = new Vector2(dest.x, dest.y).normalized * spellSpeed;
+                    if(spellTimer >= spellInterval) //Use timer for instantiation
+                    {
+                        GameObject s = Instantiate(arcaneMissile, transform.position, Quaternion.identity);
+                        s.GetComponent<Rigidbody2D>().velocity = new Vector2(dest.x, dest.y).normalized * spellSpeed;
+
+
+                        spellTimer = 0;
+                    }
+
                 }
-                arcaneMissileButton.enabled = true;
-                arcaneMissileButton.image.color = Color.white;
-
+                
                 break;
 
             case SpellTypes.MageShield:
@@ -103,6 +103,7 @@ public class Spells : MonoBehaviour
 
             default: break;
         }
+        
 
         if(castBar.value <= 0)
         {
@@ -113,11 +114,11 @@ public class Spells : MonoBehaviour
         {
             castBar.value -= Time.deltaTime;
 
-            gameObject.GetComponent<Animator>().Play("Player_Casting");
+            gameObject.GetComponentInParent<Animator>().Play("Player_Casting");
         }
     }
 
-    private IEnumerator SpellCooldown(Button button)
+    private IEnumerator SpellCooldown(Button button, float spellCD)
     {
         button.GetComponent<Image>().color = Color.red;
         button.GetComponent<Button>().enabled = false;
@@ -145,6 +146,8 @@ public class Spells : MonoBehaviour
             magic = SpellTypes.ArcaneMissile;
 
             playerStats.mana -= 150;
+
+            StartCoroutine(SpellCooldown(arcaneMissileButton, castBar.maxValue));
         }
     }
 
@@ -163,7 +166,7 @@ public class Spells : MonoBehaviour
 
             playerStats.mana -= 45;
 
-            StartCoroutine(SpellCooldown(frostLanceButton));
+            StartCoroutine(SpellCooldown(frostLanceButton, 0.5f));
         }
     }
 
@@ -182,17 +185,7 @@ public class Spells : MonoBehaviour
 
             playerStats.mana -= 120;
 
-            //End of cast - spawn spell
-            //if (castBar.value == 0)
-            //{
-            //    castBar.gameObject.SetActive(false);
-            //    Vector2 dest = Targeting.target.transform.position - transform.position;
-
-            //    GameObject s = Instantiate(fireball, transform.position, Quaternion.identity);
-            //    s.GetComponent<Rigidbody2D>().velocity = new Vector2(dest.x, dest.y).normalized * spellSpeed;
-            //    print("Shot!");
-            //}
-            //playerStats.mana -= 120;
+            StartCoroutine(SpellCooldown(fireballButton, castBar.maxValue));
         }
     }
 }

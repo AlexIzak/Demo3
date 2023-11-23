@@ -909,7 +909,6 @@ GameObject:
   - component: {fileID: 188834619}
   - component: {fileID: 188834618}
   - component: {fileID: 188834620}
-  - component: {fileID: 188834621}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -983,6 +982,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 163212812}
+  - {fileID: 1111651112}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &188834617
@@ -1098,28 +1098,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &188834621
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 188834614}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c88e7e154efe16742bc6f747f5735c60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fireball: {fileID: 5675833659679597361, guid: 8057a3fedfbec6244b6810a877a14767, type: 3}
-  arcaneMissile: {fileID: 1570186479077280897, guid: 45f7832ae5d996b41b3d9e7886083f8c, type: 3}
-  frostLance: {fileID: 7329502100949877232, guid: 68df059ce16bb7f47bda7b7421412064, type: 3}
-  castBar: {fileID: 59727944}
-  spellName: {fileID: 847036391}
-  fireballButton: {fileID: 1377185213}
-  frostLanceButton: {fileID: 1923869492}
-  arcaneMissileButton: {fileID: 1164309974}
-  mageArmourButton: {fileID: 1268023597}
-  playerStats: {fileID: 11400000, guid: 07a6ad0c21d2b4046abdd2b1b1cc9aef, type: 2}
 --- !u!1 &352469114
 GameObject:
   m_ObjectHideFlags: 0
@@ -2296,6 +2274,60 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1027762898}
   m_CullTransparentMesh: 1
+--- !u!1 &1111651111
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1111651112}
+  - component: {fileID: 1111651113}
+  m_Layer: 0
+  m_Name: SpellSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1111651112
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1111651111}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 188834616}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1111651113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1111651111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c88e7e154efe16742bc6f747f5735c60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireball: {fileID: 5675833659679597361, guid: 8057a3fedfbec6244b6810a877a14767, type: 3}
+  arcaneMissile: {fileID: 1570186479077280897, guid: 45f7832ae5d996b41b3d9e7886083f8c, type: 3}
+  frostLance: {fileID: 7329502100949877232, guid: 68df059ce16bb7f47bda7b7421412064, type: 3}
+  castBar: {fileID: 59727944}
+  spellName: {fileID: 847036391}
+  fireballButton: {fileID: 1377185213}
+  frostLanceButton: {fileID: 1923869492}
+  arcaneMissileButton: {fileID: 1164309974}
+  mageArmourButton: {fileID: 1268023597}
+  playerStats: {fileID: 11400000, guid: 07a6ad0c21d2b4046abdd2b1b1cc9aef, type: 2}
 --- !u!1 &1142396222
 GameObject:
   m_ObjectHideFlags: 0
@@ -3689,7 +3721,7 @@ PrefabInstance:
     - target: {fileID: 6820740171366980428, guid: b7753117495eb364cae64024d678484e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 188834621}
+      objectReference: {fileID: 1111651113}
     - target: {fileID: 6820740171366980428, guid: b7753117495eb364cae64024d678484e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -3737,7 +3769,7 @@ PrefabInstance:
     - target: {fileID: 7803105758570282200, guid: b7753117495eb364cae64024d678484e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 188834621}
+      objectReference: {fileID: 1111651113}
     - target: {fileID: 7803105758570282200, guid: b7753117495eb364cae64024d678484e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -3757,7 +3789,11 @@ PrefabInstance:
     - target: {fileID: 8502672013587461054, guid: b7753117495eb364cae64024d678484e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 188834621}
+      objectReference: {fileID: 1111651113}
+    - target: {fileID: 8502672013587461054, guid: b7753117495eb364cae64024d678484e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Fireball
+      objectReference: {fileID: 0}
     - target: {fileID: 8514925493852587795, guid: b7753117495eb364cae64024d678484e, type: 3}
       propertyPath: m_Pivot.x
       value: 0
