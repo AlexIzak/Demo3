@@ -11,7 +11,8 @@ public class Spells : MonoBehaviour
     public GameObject fireball;
     public GameObject arcaneMissile;
     public GameObject frostLance;
-    public Slider castBar;
+    public GameObject mageArmour;
+    public static Slider castBar;
     public TMP_Text spellName;
     public Button fireballButton;
     public Button frostLanceButton;
@@ -19,6 +20,7 @@ public class Spells : MonoBehaviour
     public Button mageArmourButton;
 
     public PlayerStats playerStats;
+    public StatusEffects statusEffects;
 
     public enum SpellTypes
     {
@@ -29,13 +31,16 @@ public class Spells : MonoBehaviour
         MageShield
     }
 
-    SpellTypes magic;
+    public static SpellTypes magic;
 
     private float spellTimer = 0;
     private float spellInterval = 1f;
+    float regenTimer = 0;
+    float regenInterval = 1f;
 
     private void Start()
     {
+        castBar = GameObject.Find("Casting").GetComponentInParent<Slider>();
         castBar.gameObject.SetActive(false);
         magic = SpellTypes.None;
         castBar.value = 0;
@@ -53,10 +58,7 @@ public class Spells : MonoBehaviour
 
                 if (castBar.value <= 0)
                 {
-                    Vector2 dest = Targeting.target.transform.position - transform.position;
-
-                    GameObject s = Instantiate(fireball, transform.position, Quaternion.identity);
-                    s.GetComponent<Rigidbody2D>().velocity = new Vector2(dest.x, dest.y).normalized * spellSpeed;
+                    ShootSpell(fireball);
                 }
 
                 break;
@@ -65,11 +67,7 @@ public class Spells : MonoBehaviour
 
                 if (castBar.value <= 0)
                 {
-                    castBar.gameObject.SetActive(false);
-                    Vector2 dest = Targeting.target.transform.position - transform.position;
-
-                    GameObject s = Instantiate(frostLance, transform.position, Quaternion.identity);
-                    s.GetComponent<Rigidbody2D>().velocity = new Vector2(dest.x, dest.y).normalized * spellSpeed;
+                    ShootSpell(frostLance);
                 }
 
                 break;
@@ -77,18 +75,12 @@ public class Spells : MonoBehaviour
             case SpellTypes.ArcaneMissile:
 
                 if(castBar.value > 0)
-                {
-                    Vector2 dest = Targeting.target.transform.position - transform.position;
-                    
+                {                    
                     spellTimer += Time.deltaTime;
                         
-                    print(spellTimer);
-
                     if(spellTimer >= spellInterval) //Use timer for instantiation
                     {
-                        GameObject s = Instantiate(arcaneMissile, transform.position, Quaternion.identity);
-                        s.GetComponent<Rigidbody2D>().velocity = new Vector2(dest.x, dest.y).normalized * spellSpeed;
-
+                        ShootSpell(arcaneMissile);
 
                         spellTimer = 0;
                     }
@@ -98,13 +90,18 @@ public class Spells : MonoBehaviour
                 break;
 
             case SpellTypes.MageShield:
-                MageShield();
+
+                statusEffects.DisplayEffect(mageArmour, 30f);
+
+                playerStats.defenseMultiplier = 0.65f;
+                playerStats.manaRegen = 25;
+
                 break;
 
             default: break;
         }
         
-
+        //Reset casting and spells
         if(castBar.value <= 0)
         {
             castBar.gameObject.SetActive(false);
@@ -116,6 +113,38 @@ public class Spells : MonoBehaviour
 
             gameObject.GetComponentInParent<Animator>().Play("Player_Casting");
         }
+
+        regenTimer += Time.deltaTime;
+            
+        //Mana regen
+        if(playerStats.mana < playerStats.maxMana && castBar.value <= 0)
+        {
+            //StartCoroutine(RegenMana());
+
+            if (regenTimer >= regenInterval)
+            {
+                playerStats.mana += playerStats.manaRegen;
+
+                if (playerStats.mana > playerStats.maxMana) playerStats.mana = playerStats.maxMana;
+
+                regenTimer = 0;
+            }
+        }
+    }
+
+    private void ShootSpell(GameObject spell)
+    {
+        Vector2 dest = Targeting.target.transform.position - transform.position;
+        GameObject s = Instantiate(spell, transform.position, Quaternion.identity);
+        s.GetComponent<Rigidbody2D>().velocity = new Vector2(dest.x, dest.y).normalized * spellSpeed;
+    }
+
+    private IEnumerator RegenMana()
+    {
+        playerStats.mana += playerStats.manaRegen;
+        yield return new WaitForSeconds(100f);
+        //playerStats.mana += playerStats.manaRegen;
+        if (playerStats.mana > playerStats.maxMana) playerStats.mana = playerStats.maxMana;
     }
 
     private IEnumerator SpellCooldown(Button button, float spellCD)
@@ -130,7 +159,20 @@ public class Spells : MonoBehaviour
 
     public void MageShield()
     {
-        throw new NotImplementedException();
+        if (playerStats.mana > 200) //Check for mana
+        {
+            //Spell starts casting
+            //castBar.gameObject.SetActive(true);
+            //castBar.maxValue = 0f;
+            //castBar.value = castBar.maxValue;
+            //spellName.text = "Mage Shield";
+
+            magic = SpellTypes.MageShield;
+
+            playerStats.mana -= 200;
+
+            StartCoroutine(SpellCooldown(arcaneMissileButton, 120f));
+        }
     }
 
     public void MagicMissile()

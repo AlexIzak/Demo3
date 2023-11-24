@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class CombatHelper : MonoBehaviour
 {
     public CombatHelper instance;
-    public string totalDamage;
+    public static string totalDamage;
 
     private void Start()
     {

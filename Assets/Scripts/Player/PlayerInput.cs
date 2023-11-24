@@ -18,6 +18,7 @@ public class PlayerInput : MonoBehaviour
     private float curAttackSpeed;
     public PlayerStats enemy;
     public CombatHelper helper;
+    public TMP_Text playerDamage;
     public TMP_Text enemyDamage;
 
     private void Start()
@@ -39,10 +40,14 @@ public class PlayerInput : MonoBehaviour
 
         bool canMelee = Targeting.canAttack && AttackToggle.canAttack;
         Attack(canMelee);
+
+        DisplayDamage(enemyDamage, enemy);
     }
 
     private void CheckHealth()
     {
+        DisplayDamage(playerDamage, player);
+        
         if(player.health <= 0)
         {
             StartCoroutine(helper.Death(animator));
@@ -61,12 +66,20 @@ public class PlayerInput : MonoBehaviour
                 //if (animator is playing the melee animation, deal damage)
                 {
                     helper.Damage(player, enemy);
-                    enemyDamage.enabled = true;
-                    enemyDamage.text = helper.totalDamage;
+                    //DisplayDamage(enemyDamage, enemy);
                 }
          
                 curAttackSpeed = 0;
             }
+        }
+    }
+
+    void DisplayDamage(TMP_Text floatingNumbers, PlayerStats entity)
+    {
+        if(entity.health < entity.maxHealth)
+        {
+            floatingNumbers.enabled = true;
+            floatingNumbers.text = CombatHelper.totalDamage;
         }
     }
 
@@ -87,5 +100,12 @@ public class PlayerInput : MonoBehaviour
 
         //Camera follow
         Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, -10);
+
+        //Cancel casting if player moves
+        if(moveVec.magnitude > 0)
+        {
+            Spells.magic = Spells.SpellTypes.None;
+            Spells.castBar.value = 0;
+        }
     }
 }

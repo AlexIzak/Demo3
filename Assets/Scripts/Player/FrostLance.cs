@@ -5,9 +5,9 @@ using UnityEngine;
 public class FrostLance : MonoBehaviour
 {
     private float spellDamage = 10f;
-    private float slowEffect = 15f;
-    private int stacks  = 5;
-    private float stackDuration = 5f;
+    //private float slowEffect = 15f;
+    //private int stacks  = 5;
+    //private float stackDuration = 5f;
     public PlayerStats enemy;
     public CombatHelper helper;
 
@@ -27,20 +27,20 @@ public class FrostLance : MonoBehaviour
 
                 if (hitChance > 80)
                 {
-                    enemy.health -= damage * 2; //Crit
-                    helper.totalDamage = ((int)damage * 2).ToString();
+                    enemy.health -= (int)damage * 2; //Crit
+                    CombatHelper.totalDamage = ((int)damage * 2).ToString();
                 }
                 else
                 {
-                    enemy.health -= damage;
-                    helper.totalDamage = ((int)damage).ToString();
+                    enemy.health -= (int)damage;
+                    CombatHelper.totalDamage = ((int)damage).ToString();
                 }
             }
             else if (hitChance < 20)
             {
                 //Display Miss
                 //print("Miss");
-                helper.totalDamage = "Miss!";
+                CombatHelper.totalDamage = "Miss!";
             }
             Destroy(gameObject);
         }

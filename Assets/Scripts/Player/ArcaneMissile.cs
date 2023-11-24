@@ -5,8 +5,8 @@ using UnityEngine;
 public class ArcaneMissile : MonoBehaviour
 {
     private float spellDamage = 15f;
-    private float buffDuration = 10f;
-    private float delay = 1f;
+    //private float buffDuration = 10f;
+    //private float delay = 1f;
     public PlayerStats enemy;
     public CombatHelper helper;
 
@@ -24,23 +24,23 @@ public class ArcaneMissile : MonoBehaviour
 
                 if (hitChance > 80)
                 {
-                    enemy.health -= damage * 2; //Crit
-                    helper.totalDamage = ((int)damage * 2).ToString();
+                    enemy.health -= (int)damage * 2; //Crit
+                    CombatHelper.totalDamage = ((int)damage * 2).ToString();
 
                     //Apply buff to self
 
                 }
                 else
                 {
-                    enemy.health -= damage;
-                    helper.totalDamage = ((int)damage).ToString();
+                    enemy.health -= (int)damage;
+                    CombatHelper.totalDamage = ((int)damage).ToString();
                 }
             }
             else if (hitChance < 20)
             {
                 //Display Miss
                 //print("Miss");
-                helper.totalDamage = "Miss!";
+                CombatHelper.totalDamage = "Miss!";
             }
             Destroy(gameObject);
         }

@@ -2543,4 +2543,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   instance: {fileID: 2967969374009481201}
-  totalDamage: 0
+  totalDamage: 20
