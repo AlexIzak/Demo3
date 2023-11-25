@@ -11,7 +11,8 @@ public class Spells : MonoBehaviour
     public GameObject fireball;
     public GameObject arcaneMissile;
     public GameObject frostLance;
-    public GameObject mageArmour;
+    public GameObject mageArmor;
+    private float mageArmorCD = 120f;
     public static Slider castBar;
     public TMP_Text spellName;
     public Button fireballButton;
@@ -56,6 +57,7 @@ public class Spells : MonoBehaviour
 
             case SpellTypes.Fireball:
 
+                StartCoroutine(SpellCooldown(fireballButton, castBar.maxValue));
                 if (castBar.value <= 0)
                 {
                     ShootSpell(fireball);
@@ -65,6 +67,7 @@ public class Spells : MonoBehaviour
 
             case SpellTypes.FrostLance:
 
+                StartCoroutine(SpellCooldown(frostLanceButton, 0.5f));
                 if (castBar.value <= 0)
                 {
                     ShootSpell(frostLance);
@@ -74,6 +77,7 @@ public class Spells : MonoBehaviour
 
             case SpellTypes.ArcaneMissile:
 
+                StartCoroutine(SpellCooldown(arcaneMissileButton, castBar.maxValue));
                 if(castBar.value > 0)
                 {                    
                     spellTimer += Time.deltaTime;
@@ -81,7 +85,6 @@ public class Spells : MonoBehaviour
                     if(spellTimer >= spellInterval) //Use timer for instantiation
                     {
                         ShootSpell(arcaneMissile);
-
                         spellTimer = 0;
                     }
 
@@ -91,6 +94,7 @@ public class Spells : MonoBehaviour
 
             case SpellTypes.MageShield:
 
+                StartCoroutine(SpellCooldown(mageArmourButton, 120f));
                 statusEffects.DisplayEffect(mageArmour, 30f);
 
                 playerStats.defenseMultiplier = 0.65f;
@@ -149,9 +153,13 @@ public class Spells : MonoBehaviour
 
     private IEnumerator SpellCooldown(Button button, float spellCD)
     {
+        spellCD -= Time.deltaTime;
         button.GetComponent<Image>().color = Color.red;
         button.GetComponent<Button>().enabled = false;
+        button.GetComponentInChildren<TMP_Text>().enabled = true;
+        button.GetComponentInChildren<TMP_Text>().text = ((int)spellCD).ToString();
         yield return new WaitForSeconds(spellCD);
+        button.GetComponentInChildren<TMP_Text>().enabled = false;
         button.GetComponent<Image>().color = Color.white;
         button.GetComponent<Button>().enabled = true;
     }
@@ -171,7 +179,7 @@ public class Spells : MonoBehaviour
 
             playerStats.mana -= 200;
 
-            StartCoroutine(SpellCooldown(arcaneMissileButton, 120f));
+            //StartCoroutine(SpellCooldown(arcaneMissileButton, 120f));
         }
     }
 
@@ -189,7 +197,7 @@ public class Spells : MonoBehaviour
 
             playerStats.mana -= 150;
 
-            StartCoroutine(SpellCooldown(arcaneMissileButton, castBar.maxValue));
+            //StartCoroutine(SpellCooldown(arcaneMissileButton, castBar.maxValue));
         }
     }
 
@@ -208,7 +216,7 @@ public class Spells : MonoBehaviour
 
             playerStats.mana -= 45;
 
-            StartCoroutine(SpellCooldown(frostLanceButton, 0.5f));
+            //StartCoroutine(SpellCooldown(frostLanceButton, 0.5f));
         }
     }
 
@@ -227,7 +235,7 @@ public class Spells : MonoBehaviour
 
             playerStats.mana -= 120;
 
-            StartCoroutine(SpellCooldown(fireballButton, castBar.maxValue));
+            //StartCoroutine(SpellCooldown(fireballButton, castBar.maxValue));
         }
     }
 }
