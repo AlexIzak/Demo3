@@ -95,7 +95,7 @@ public class Spells : MonoBehaviour
             case SpellTypes.MageShield:
 
                 StartCoroutine(SpellCooldown(mageArmourButton, 120f));
-                statusEffects.DisplayEffect(mageArmour, 30f);
+                statusEffects.DisplayEffect(mageArmor, 30f);
 
                 playerStats.defenseMultiplier = 0.65f;
                 playerStats.manaRegen = 25;

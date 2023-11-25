@@ -7,6 +7,7 @@ using UnityEngine;
 public class PlayerStats : ScriptableObject
 {
     [Header("Stats")]
+    public string type;
     public float maxHealth;
     public float health;
     public float maxMana;

@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4fa1498f9e895c46a1136ce2a6d6dc2, type: 3}
   m_Name: Enemy
   m_EditorClassIdentifier: 
+  type: Enemy
   maxHealth: 250
   health: 250
+  maxMana: 0
   mana: 0
   attackSpeed: 3
   damage: 25

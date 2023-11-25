@@ -19,16 +19,12 @@ public class PlayerInput : MonoBehaviour
     public PlayerStats enemy;
     public CombatHelper helper;
     public TMP_Text playerDamage;
-    public TMP_Text enemyDamage;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         player.health = player.maxHealth;
         player.mana = player.maxMana;
-        enemy.health = enemy.maxHealth; //TODO Move to enemy AI script once made
-
-        enemyDamage.enabled = false;
     }
 
     // Update is called once per frame
@@ -41,16 +37,17 @@ public class PlayerInput : MonoBehaviour
         bool canMelee = Targeting.canAttack && AttackToggle.canAttack;
         Attack(canMelee);
 
-        DisplayDamage(enemyDamage, enemy);
+        //DisplayDamage(enemyDamage, enemy);
     }
 
     private void CheckHealth()
     {
-        DisplayDamage(playerDamage, player);
+        helper.DisplayDamage(playerDamage, player);
         
         if(player.health <= 0)
         {
             StartCoroutine(helper.Death(animator));
+            this.enabled = false;
         }
     }
 
@@ -71,15 +68,6 @@ public class PlayerInput : MonoBehaviour
          
                 curAttackSpeed = 0;
             }
-        }
-    }
-
-    void DisplayDamage(TMP_Text floatingNumbers, PlayerStats entity)
-    {
-        if(entity.health < entity.maxHealth)
-        {
-            floatingNumbers.enabled = true;
-            floatingNumbers.text = CombatHelper.totalDamage;
         }
     }
 

@@ -25,6 +25,11 @@ public class CombatHelper : MonoBehaviour
             //Caculate damage if we hit
             float damage = UnityEngine.Random.Range(dealer.damage * 0.75f, dealer.damage * 1.25f) * receiver.defenseMultiplier;
 
+            if(dealer.type == "Enemy" && hitChance >= 50)
+            {
+                damage += 10;
+            }
+
             if(hitChance > 80)
             {
                 receiver.health -= damage * 2; //Crit
@@ -35,21 +40,34 @@ public class CombatHelper : MonoBehaviour
                 receiver.health -= damage;
                 totalDamage = ((int)damage).ToString();
             }
+
+            if(dealer.type == "Enemy" && AIStateMachine.enraged)
+            {
+                damage *= 2;
+                totalDamage = ((int)damage).ToString();
+            }
         }
         else if(hitChance < 20)
         {
-            //Display Miss
-            //print("Miss");
             totalDamage = "Miss!";
         }
     }
 
     public IEnumerator Death(Animator corpse)
     {
-        corpse.Play("Player_Dead");
+        corpse.Play("Death");
         yield return new WaitForSeconds(3);
         if(corpse.CompareTag("Player")) SceneManager.LoadScene(0);
-        //else corpse.
+        else corpse.StopPlayback();
+    }
+
+    public void DisplayDamage(TMP_Text floatingNumbers, PlayerStats entity)
+    {
+        if (entity.health < entity.maxHealth)
+        {
+            floatingNumbers.enabled = true;
+            floatingNumbers.text = CombatHelper.totalDamage;
+        }
     }
 
     public void Test()

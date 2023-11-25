@@ -406,6 +406,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 107970049}
   m_CullTransparentMesh: 1
+--- !u!1 &123092221
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 123092222}
+  m_Layer: 0
+  m_Name: SpitSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &123092222
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 123092221}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.288, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 153346343}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &126588527
 GameObject:
   m_ObjectHideFlags: 0
@@ -454,7 +485,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -598,6 +629,7 @@ Transform:
   m_Children:
   - {fileID: 186680894}
   - {fileID: 959304165}
+  - {fileID: 123092222}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &153346344
@@ -672,7 +704,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0014add42963874f97f4d11d04e7622, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 188834614}
+  mage: {fileID: 188834614}
+  poisonSpit: {fileID: 5675833659679597361, guid: 28bf00a7fa70c3a499882a2ad1199e87, type: 3}
+  toxicSpit: {fileID: 4646101733387623112, guid: f3022710eff875442884b8fbdf53f4bb, type: 3}
+  spitSpawn: {fileID: 123092222}
+  helper: {fileID: 3200460630423552589}
+  player: {fileID: 11400000, guid: 07a6ad0c21d2b4046abdd2b1b1cc9aef, type: 2}
+  enemy: {fileID: 11400000, guid: bdbc6a9bf8a335649a5cfef08883ee80, type: 2}
+  enemyDamage: {fileID: 545639350}
 --- !u!50 &153346347
 Rigidbody2D:
   serializedVersion: 4
@@ -1031,7 +1070,7 @@ Transform:
   m_GameObject: {fileID: 188834614}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.34, y: -1.2, z: 0}
+  m_LocalPosition: {x: -7.53, y: -3.72, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1130,7 +1169,6 @@ MonoBehaviour:
   enemy: {fileID: 11400000, guid: bdbc6a9bf8a335649a5cfef08883ee80, type: 2}
   helper: {fileID: 3200460630423552589}
   playerDamage: {fileID: 1027762900}
-  enemyDamage: {fileID: 545639350}
 --- !u!95 &188834620
 Animator:
   serializedVersion: 7
@@ -2362,7 +2400,7 @@ MonoBehaviour:
   fireball: {fileID: 5675833659679597361, guid: 8057a3fedfbec6244b6810a877a14767, type: 3}
   arcaneMissile: {fileID: 1570186479077280897, guid: 45f7832ae5d996b41b3d9e7886083f8c, type: 3}
   frostLance: {fileID: 7329502100949877232, guid: 68df059ce16bb7f47bda7b7421412064, type: 3}
-  mageArmour: {fileID: 589045123}
+  mageArmor: {fileID: 589045123}
   spellName: {fileID: 4562916958726699497}
   fireballButton: {fileID: 8117042004944168450}
   frostLanceButton: {fileID: 6625404848827715312}
@@ -3003,7 +3041,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.16820931, g: 0.26415092, b: 0.19904768, a: 1}
+  m_Color: {r: 0.6226415, g: 0.561231, b: 0.23202206, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
