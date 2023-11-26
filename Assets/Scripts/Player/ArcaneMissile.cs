@@ -9,6 +9,7 @@ public class ArcaneMissile : MonoBehaviour
     //private float delay = 1f;
     public PlayerStats enemy;
     public CombatHelper helper;
+    public StatusEffects statusEffects;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -20,7 +21,7 @@ public class ArcaneMissile : MonoBehaviour
             if (hitChance > 20)
             {
                 //Caculate damage if we hit
-                float damage = UnityEngine.Random.Range(spellDamage * 0.75f, spellDamage * 1.25f) * enemy.defenseMultiplier;
+                float damage = UnityEngine.Random.Range(spellDamage * 0.75f, spellDamage * 1.25f) * enemy.currentDefenseMultiplier;
 
                 if (hitChance > 80)
                 {
@@ -28,7 +29,7 @@ public class ArcaneMissile : MonoBehaviour
                     CombatHelper.totalDamage = ((int)damage * 2).ToString();
 
                     //Apply buff to self
-
+                    //statusEffects.DisplayEffect(statusEffects.gameObject.name);
                 }
                 else
                 {

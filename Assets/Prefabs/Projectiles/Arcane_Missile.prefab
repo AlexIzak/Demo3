@@ -174,3 +174,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 11400000, guid: bdbc6a9bf8a335649a5cfef08883ee80, type: 2}
   helper: {fileID: 2967969374009481201, guid: b7753117495eb364cae64024d678484e, type: 3}
+  statusEffects: {fileID: 7889005085143313884, guid: 122d4e635c0d2bb49a439a0da49de8df, type: 3}

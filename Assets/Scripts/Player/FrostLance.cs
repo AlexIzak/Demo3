@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class FrostLance : MonoBehaviour
@@ -10,6 +11,7 @@ public class FrostLance : MonoBehaviour
     //private float stackDuration = 5f;
     public PlayerStats enemy;
     public CombatHelper helper;
+    public StatusEffects statusEffects;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -21,9 +23,10 @@ public class FrostLance : MonoBehaviour
             if (hitChance > 20)
             {
                 //Caculate damage if we hit
-                float damage = UnityEngine.Random.Range(spellDamage * 0.75f, spellDamage * 1.25f) * enemy.defenseMultiplier;
+                float damage = UnityEngine.Random.Range(spellDamage * 0.75f, spellDamage * 1.25f) * enemy.currentDefenseMultiplier;
 
                 //Apply slow debuff to the enemy
+                //statusEffects.DisplayEffect(statusEffects.gameObject.name);
 
                 if (hitChance > 80)
                 {

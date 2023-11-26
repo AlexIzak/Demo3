@@ -9,7 +9,6 @@ public class PlayerInput : MonoBehaviour
 {
     [Header("Movement")]
     private Rigidbody2D rb;
-    private float speed = 1.0f;
     public Animator animator;
 
     [Header("Attaking")]
@@ -25,6 +24,7 @@ public class PlayerInput : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         player.health = player.maxHealth;
         player.mana = player.maxMana;
+        playerDamage.enabled = false;
     }
 
     // Update is called once per frame
@@ -36,8 +36,11 @@ public class PlayerInput : MonoBehaviour
 
         bool canMelee = Targeting.canAttack && AttackToggle.canAttack;
         Attack(canMelee);
+    }
 
-        //DisplayDamage(enemyDamage, enemy);
+    public PlayerStats GetPlayerStats()
+    {
+        return player;
     }
 
     private void CheckHealth()
@@ -63,7 +66,6 @@ public class PlayerInput : MonoBehaviour
                 //if (animator is playing the melee animation, deal damage)
                 {
                     helper.Damage(player, enemy);
-                    //DisplayDamage(enemyDamage, enemy);
                 }
          
                 curAttackSpeed = 0;
@@ -80,7 +82,7 @@ public class PlayerInput : MonoBehaviour
             moveVec = moveVec.normalized;
         }
 
-        rb.velocity = moveVec * speed;
+        rb.velocity = moveVec * player.currentMoveSpeed;
 
         animator.SetFloat("Horizontal", moveVec.x);
         animator.SetFloat("Vertical", moveVec.y);

@@ -13,7 +13,11 @@ public class PlayerStats : ScriptableObject
     public float maxMana;
     public float mana;
     public float attackSpeed;
+    public float baseMoveSpeed;
+    public float currentMoveSpeed;
     public float damage;
-    public float defenseMultiplier;
-    public int manaRegen;
+    public float baseDefenseMultiplier;
+    public float currentDefenseMultiplier;
+    public int baseManaRegen;
+    public int currentManaRegen;
 }

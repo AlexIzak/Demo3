@@ -14,8 +14,6 @@ public class Targeting : MonoBehaviour
 
     public static bool canAttack = false;
 
-    private PlayerInput player;
-
     private void Start()
     {
         target = null;
@@ -30,7 +28,9 @@ public class Targeting : MonoBehaviour
         {
             if (Input.GetTouch(0).phase == TouchPhase.Began)
             {
-                Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+                //Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+                Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
                 Vector2 touchPos = new Vector2(pos.x, pos.y);
                 
                 var hit = Physics2D.OverlapPoint(touchPos);
@@ -39,18 +39,20 @@ public class Targeting : MonoBehaviour
                 if (hit.transform.CompareTag("Enemy"))
                 {
                     //Tapped, target the enemy - lock on
-                    target = hit.transform;
+                    target = this.transform;
                     //Feedback - show that you are locked on
-                    selected.enabled = true;
+                    this.selected.enabled = true;
                     canAttack = true;
+                    print("Enemy Clicked");
                 }
                 else if (hit.transform.CompareTag("Ground") && !IsMouseOverUI())
                 {
                     //Missed - if target exists, deselect target
                     if (target != null) target = null;
                     //Show that its deselected
-                    selected.enabled = false;
+                    this.selected.enabled = false;
                     canAttack = false;
+                    print("Ground Clicked");
                 }
 
                 combat.enabled = canAttack;

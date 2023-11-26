@@ -4,22 +4,32 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityStandardAssets.Effects;
 
 public class Spells : MonoBehaviour
 {
+    [Header("Spell Variables and References")]
     private float spellSpeed = 2f;
     public GameObject fireball;
     public GameObject arcaneMissile;
     public GameObject frostLance;
-    public GameObject mageArmor;
-    private float mageArmorCD = 120f;
     public static Slider castBar;
     public TMP_Text spellName;
+    private float mageArmorCD = 120f;
+
+    [Header("Spell Buttons")]
     public Button fireballButton;
     public Button frostLanceButton;
     public Button arcaneMissileButton;
     public Button mageArmourButton;
 
+    [Header("Spell Costs")]
+    public int fireballCost = 120;
+    public int frostLanceCost = 45;
+    public int arcaneMissilesCost = 150;
+    public int mageArmorCost = 200;
+
+    [Header("Script References")]
     public PlayerStats playerStats;
     public StatusEffects statusEffects;
 
@@ -34,10 +44,14 @@ public class Spells : MonoBehaviour
 
     public static SpellTypes magic;
 
+
     private float spellTimer = 0;
     private float spellInterval = 1f;
     float regenTimer = 0;
     float regenInterval = 1f;
+
+    [Header("Effect References")]
+    public GameObject mageArmor;
 
     private void Start()
     {
@@ -94,15 +108,19 @@ public class Spells : MonoBehaviour
 
             case SpellTypes.MageShield:
 
-                StartCoroutine(SpellCooldown(mageArmourButton, 120f));
-                statusEffects.DisplayEffect(mageArmor, 30f);
-
-                playerStats.defenseMultiplier = 0.65f;
-                playerStats.manaRegen = 25;
+                StartCoroutine(SpellCooldown(mageArmourButton, mageArmorCD));
+                statusEffects.DisplayEffect(mageArmor);
 
                 break;
 
             default: break;
+        }
+
+        if(mageArmourButton.GetComponent<Image>().color == Color.red)
+        {
+            mageArmorCD -= Time.deltaTime;
+
+            mageArmourButton.GetComponentInChildren<TMP_Text>().text = ((int)mageArmorCD).ToString();
         }
         
         //Reset casting and spells
@@ -123,11 +141,9 @@ public class Spells : MonoBehaviour
         //Mana regen
         if(playerStats.mana < playerStats.maxMana && castBar.value <= 0)
         {
-            //StartCoroutine(RegenMana());
-
             if (regenTimer >= regenInterval)
             {
-                playerStats.mana += playerStats.manaRegen;
+                playerStats.mana += playerStats.currentManaRegen;
 
                 if (playerStats.mana > playerStats.maxMana) playerStats.mana = playerStats.maxMana;
 
@@ -143,17 +159,8 @@ public class Spells : MonoBehaviour
         s.GetComponent<Rigidbody2D>().velocity = new Vector2(dest.x, dest.y).normalized * spellSpeed;
     }
 
-    private IEnumerator RegenMana()
-    {
-        playerStats.mana += playerStats.manaRegen;
-        yield return new WaitForSeconds(100f);
-        //playerStats.mana += playerStats.manaRegen;
-        if (playerStats.mana > playerStats.maxMana) playerStats.mana = playerStats.maxMana;
-    }
-
     private IEnumerator SpellCooldown(Button button, float spellCD)
     {
-        spellCD -= Time.deltaTime;
         button.GetComponent<Image>().color = Color.red;
         button.GetComponent<Button>().enabled = false;
         button.GetComponentInChildren<TMP_Text>().enabled = true;
@@ -167,25 +174,17 @@ public class Spells : MonoBehaviour
 
     public void MageShield()
     {
-        if (playerStats.mana > 200) //Check for mana
+        if (playerStats.mana > mageArmorCost) //Check for mana
         {
-            //Spell starts casting
-            //castBar.gameObject.SetActive(true);
-            //castBar.maxValue = 0f;
-            //castBar.value = castBar.maxValue;
-            //spellName.text = "Mage Shield";
-
             magic = SpellTypes.MageShield;
 
-            playerStats.mana -= 200;
-
-            //StartCoroutine(SpellCooldown(arcaneMissileButton, 120f));
+            playerStats.mana -= mageArmorCost;
         }
     }
 
     public void MagicMissile()
     {
-        if (playerStats.mana > 150) //Check for mana
+        if (playerStats.mana > arcaneMissilesCost) //Check for mana
         {
             //Spell starts casting
             castBar.gameObject.SetActive(true);
@@ -195,35 +194,31 @@ public class Spells : MonoBehaviour
 
             magic = SpellTypes.ArcaneMissile;
 
-            playerStats.mana -= 150;
-
-            //StartCoroutine(SpellCooldown(arcaneMissileButton, castBar.maxValue));
+            playerStats.mana -= arcaneMissilesCost;
         }
     }
 
     public void FrostLance()
     {
-        if (playerStats.mana > 45) //Check for mana
+        if (playerStats.mana > frostLanceCost) //Check for mana
         {
 
             //Spell starts casting
-            castBar.gameObject.SetActive(true);
-            castBar.maxValue = 0;
-            castBar.value = castBar.maxValue;
-            spellName.text = frostLance.name;
+            //castBar.gameObject.SetActive(true);
+            //castBar.maxValue = 0;
+            //castBar.value = castBar.maxValue;
+            //spellName.text = frostLance.name;
 
             magic = SpellTypes.FrostLance;
 
-            playerStats.mana -= 45;
-
-            //StartCoroutine(SpellCooldown(frostLanceButton, 0.5f));
+            playerStats.mana -= frostLanceCost;
         }
     }
 
 
     public void Fireball()
     {
-        if (playerStats.mana > 120) //Check for mana
+        if (playerStats.mana > fireballCost) //Check for mana
         {
             //Spell starts casting
             castBar.gameObject.SetActive(true);
@@ -233,9 +228,12 @@ public class Spells : MonoBehaviour
 
             magic = SpellTypes.Fireball;
 
-            playerStats.mana -= 120;
-
-            //StartCoroutine(SpellCooldown(fireballButton, castBar.maxValue));
+            playerStats.mana -= fireballCost;
         }
+    }
+
+    public void BrilliantCasting()
+    {
+        fireballCost = frostLanceCost = arcaneMissilesCost = mageArmorCost = 0;
     }
 }

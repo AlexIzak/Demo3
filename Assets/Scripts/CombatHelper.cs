@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -23,7 +22,7 @@ public class CombatHelper : MonoBehaviour
         if(hitChance > 20)
         {
             //Caculate damage if we hit
-            float damage = UnityEngine.Random.Range(dealer.damage * 0.75f, dealer.damage * 1.25f) * receiver.defenseMultiplier;
+            float damage = UnityEngine.Random.Range(dealer.damage * 0.75f, dealer.damage * 1.25f) * receiver.currentDefenseMultiplier;
 
             if(dealer.type == "Enemy" && hitChance >= 50)
             {
@@ -56,6 +55,7 @@ public class CombatHelper : MonoBehaviour
     public IEnumerator Death(Animator corpse)
     {
         corpse.Play("Death");
+        Targeting.canAttack = false;
         yield return new WaitForSeconds(3);
         if(corpse.CompareTag("Player")) SceneManager.LoadScene(0);
         else corpse.StopPlayback();

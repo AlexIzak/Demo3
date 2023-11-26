@@ -2,36 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AIStateMachine : MonoBehaviour
 {
-    public GameObject mage;
+    private GameObject mage;
     public GameObject poisonSpit;
     public GameObject toxicSpit;
     public Transform spitSpawn;
-    private float aggroRange = 5f;
+    public float aggroRange = 5f;
     private bool aggroed = false;
     private Rigidbody2D rb;
-    private float speed = 0.5f;
     private float attackRange = 3f;
     private int attackCount = 0;
     private float curAttackSpeed;
     public static bool enraged = false;
+    public Slider castBar;
 
     private Animator animator;
 
     public CombatHelper helper;
-    public PlayerStats player;
     public PlayerStats enemy;
     public TMP_Text enemyDamage;
     private float spellSpeed = 2f;
 
     private void Start()
     {
+        mage = GameObject.Find("Player");
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         enemy.health = enemy.maxHealth;
         enemyDamage.enabled = false;
+        castBar.gameObject.SetActive(false);
+        castBar.maxValue = 3;
+        castBar.value = castBar.maxValue;
     }
 
     // Update is called once per frame
@@ -39,6 +43,11 @@ public class AIStateMachine : MonoBehaviour
     {
         CheckHealth();
         Move();
+    }
+
+    public PlayerStats GetEnemyStats()
+    {
+        return enemy;
     }
 
     private void Move()
@@ -49,7 +58,7 @@ public class AIStateMachine : MonoBehaviour
 
         if (aggroed)
         {
-            rb.velocity = d * speed;
+            rb.velocity = d * enemy.currentMoveSpeed;
             Attack(d);
         }
 
@@ -64,7 +73,8 @@ public class AIStateMachine : MonoBehaviour
         {
             rb.velocity = new Vector2(0, 0);
             //Attack
-            curAttackSpeed += Time.deltaTime;
+            curAttackSpeed += Time.deltaTime; //Stop attacking if casting
+
             if (curAttackSpeed > enemy.attackSpeed)
             {
                 animator.Play("EnemyAttack");
@@ -74,11 +84,16 @@ public class AIStateMachine : MonoBehaviour
                     if (attackCount == 3)
                     {
                         //Start toxic split - cast
+                        //castBar.value -= Time.deltaTime;
 
                         //Instantiate
                         SpitAttack(toxicSpit);
-
-                        //Reset attack count
+                        //if (castBar.value <= 0)
+                        //{
+                        //    //Reset attack count
+                        //    castBar.gameObject.SetActive(false);
+                        //    castBar.value = castBar.maxValue;
+                        //}
                         attackCount = 0;
                     }
                     else
@@ -88,7 +103,6 @@ public class AIStateMachine : MonoBehaviour
                     }
 
                     print("Attack!");
-                    //DisplayDamage(enemyDamage, enemy);
                 }
 
                 curAttackSpeed = 0;

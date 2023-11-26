@@ -18,6 +18,10 @@ MonoBehaviour:
   maxMana: 960
   mana: 960
   attackSpeed: 2
+  baseMoveSpeed: 1
+  currentMoveSpeed: 1
   damage: 18
-  defenseMultiplier: 0.9
-  manaRegen: 12
+  baseDefenseMultiplier: 0.9
+  currentDefenseMultiplier: 0.9
+  baseManaRegen: 12
+  currentManaRegen: 12
